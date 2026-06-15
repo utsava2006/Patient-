@@ -13,7 +13,7 @@ export default function PatientLogin() {
     setError('');
     
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/patient/login', {
+      const res = await axios.post('https://hospital-backend-8ot5.onrender.com/api/auth/patient/login', {
         name,
         phoneNumber
       });

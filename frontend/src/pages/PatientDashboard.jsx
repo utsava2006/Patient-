@@ -21,7 +21,7 @@ export default function PatientDashboard() {
 
   const fetchPatientData = async (code) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/patient/${code}`);
+      const res = await axios.get(`https://hospital-backend-8ot5.onrender.com/api/patient/${code}`);
       setPatient(res.data);
     } catch (err) {
       console.error(err);
@@ -31,7 +31,7 @@ export default function PatientDashboard() {
   const handleAddVitals = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/patient/vitals', {
+      await axios.post('https://hospital-backend-8ot5.onrender.com/api/patient/vitals', {
         patientId: patient.id,
         systolicBP,
         diastolicBP,
