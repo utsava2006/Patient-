@@ -42,6 +42,9 @@ export default function DoctorLogin() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="admin"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck="false"
             />
           </div>
           <div>
