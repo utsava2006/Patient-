@@ -92,24 +92,28 @@ export default function PatientDashboard() {
       <div className="max-w-6xl mx-auto space-y-8">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-card p-6 rounded-2xl shadow-sm border border-border">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center glass-card p-8 rounded-3xl shadow-lg border border-white/50 animate-in fade-in slide-in-from-bottom-4">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Welcome, {patient.name}</h1>
-            <p className="text-muted-foreground mt-1">Patient Code: <span className="font-mono font-bold bg-muted px-2 py-1 rounded text-foreground">{patient.patientCode}</span></p>
-            <p className="text-muted-foreground mt-1 font-medium">Total Visits: {patient.visitCount || 0}</p>
+            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Welcome, {patient.name}</h1>
+            <p className="text-slate-500 mt-2 text-lg">Patient Code: <span className="font-mono font-bold bg-white px-3 py-1.5 rounded-lg text-slate-800 shadow-sm border border-slate-200">{patient.patientCode}</span></p>
           </div>
-          <div className="mt-4 md:mt-0 bg-primary/10 text-primary px-4 py-2 rounded-lg flex items-center gap-2">
-            <Calendar className="w-5 h-5" />
-            <span className="font-medium">
-              Next Visit: {patient.nextVisitDate ? new Date(patient.nextVisitDate).toLocaleDateString() : 'Not scheduled'}
-            </span>
+          <div className="mt-4 md:mt-0 bg-white shadow-sm border border-slate-100 text-slate-700 px-6 py-4 rounded-2xl flex items-center gap-3">
+            <div className="p-2 bg-primary/10 text-primary rounded-xl">
+              <Calendar className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Next Visit</p>
+              <p className="font-bold text-slate-800">
+                {patient.nextVisitDate ? new Date(patient.nextVisitDate).toLocaleDateString() : 'Not scheduled'}
+              </p>
+            </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column: Add Vitals */}
           <div className="lg:col-span-1 space-y-8">
-            <div className="bg-card p-6 rounded-2xl shadow-sm border border-border">
+            <div className="glass-card p-6 rounded-2xl shadow-sm border border-slate-200/60">
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Activity className="text-primary w-5 h-5" />
                 Log Vitals
@@ -118,16 +122,16 @@ export default function PatientDashboard() {
                 <div className="flex gap-4">
                   <div className="flex-1">
                     <label className="block text-sm font-medium mb-1">Systolic BP</label>
-                    <input type="number" required value={systolicBP} onChange={e => setSystolicBP(e.target.value)} className="w-full p-2 bg-input border border-border rounded-lg" placeholder="120" />
+                    <input type="number" required value={systolicBP} onChange={e => setSystolicBP(e.target.value)} className="w-full p-2 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-xl focus:ring-2 focus:ring-primary focus:outline-none transition-all shadow-sm" placeholder="120" />
                   </div>
                   <div className="flex-1">
                     <label className="block text-sm font-medium mb-1">Diastolic BP</label>
-                    <input type="number" required value={diastolicBP} onChange={e => setDiastolicBP(e.target.value)} className="w-full p-2 bg-input border border-border rounded-lg" placeholder="80" />
+                    <input type="number" required value={diastolicBP} onChange={e => setDiastolicBP(e.target.value)} className="w-full p-2 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-xl focus:ring-2 focus:ring-primary focus:outline-none transition-all shadow-sm" placeholder="80" />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Blood Sugar (mg/dL)</label>
-                  <input type="number" required value={bloodSugar} onChange={e => setBloodSugar(e.target.value)} className="w-full p-2 bg-input border border-border rounded-lg" placeholder="100" />
+                  <input type="number" required value={bloodSugar} onChange={e => setBloodSugar(e.target.value)} className="w-full p-2 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-xl focus:ring-2 focus:ring-primary focus:outline-none transition-all shadow-sm" placeholder="100" />
                 </div>
                 <button type="submit" className="w-full py-2 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition">
                   Save Vitals
@@ -136,7 +140,7 @@ export default function PatientDashboard() {
             </div>
 
             {/* Upload Document */}
-            <div className="bg-card p-6 rounded-2xl shadow-sm border border-border mt-8">
+            <div className="glass-card p-6 rounded-2xl shadow-sm border border-slate-200/60 mt-8">
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Upload className="text-primary w-5 h-5" />
                 Upload Report
@@ -144,11 +148,11 @@ export default function PatientDashboard() {
               <form onSubmit={handleUploadDocument} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Report Title</label>
-                  <input type="text" required value={docTitle} onChange={e => setDocTitle(e.target.value)} className="w-full p-2 bg-input border border-border rounded-lg" placeholder="e.g., Blood Test Results" />
+                  <input type="text" required value={docTitle} onChange={e => setDocTitle(e.target.value)} className="w-full p-2 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-xl focus:ring-2 focus:ring-primary focus:outline-none transition-all shadow-sm" placeholder="e.g., Blood Test Results" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">File</label>
-                  <input type="file" required onChange={e => setDocFile(e.target.files[0])} className="w-full p-2 bg-input border border-border rounded-lg" />
+                  <input type="file" required onChange={e => setDocFile(e.target.files[0])} className="w-full p-2 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-xl focus:ring-2 focus:ring-primary focus:outline-none transition-all shadow-sm" />
                 </div>
                 <button type="submit" disabled={isUploading} className="w-full flex items-center justify-center gap-2 py-2 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition disabled:opacity-50">
                   {isUploading ? 'Uploading...' : 'Upload Report'}
@@ -159,7 +163,7 @@ export default function PatientDashboard() {
 
           {/* Right Column: History & Meds */}
           <div className="lg:col-span-2 space-y-8">
-            <div className="bg-card p-6 rounded-2xl shadow-sm border border-border">
+            <div className="glass-card p-6 rounded-2xl shadow-sm border border-slate-200/60">
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Activity className="text-primary w-5 h-5" />
                 Vitals History
@@ -170,7 +174,7 @@ export default function PatientDashboard() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
-                      <tr className="border-b border-border text-muted-foreground text-sm">
+                      <tr className="border-b border-slate-200/60 text-muted-foreground text-sm">
                         <th className="pb-3 font-medium">Date</th>
                         <th className="pb-3 font-medium">Blood Pressure</th>
                         <th className="pb-3 font-medium">Blood Sugar</th>
@@ -178,7 +182,7 @@ export default function PatientDashboard() {
                     </thead>
                     <tbody>
                       {patient.vitals?.map(v => (
-                        <tr key={v.id} className="border-b border-border/50 last:border-0">
+                        <tr key={v.id} className="border-b border-slate-200/60/50 last:border-0">
                           <td className="py-3">{new Date(v.recordedAt).toLocaleString()}</td>
                           <td className="py-3 font-medium text-foreground">{v.systolicBP} / {v.diastolicBP}</td>
                           <td className="py-3 font-medium text-foreground">{v.bloodSugar} mg/dL</td>
@@ -191,7 +195,7 @@ export default function PatientDashboard() {
             </div>
 
             {/* Visit History */}
-            <div className="bg-card p-6 rounded-2xl shadow-sm border border-border">
+            <div className="glass-card p-6 rounded-2xl shadow-sm border border-slate-200/60">
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Calendar className="text-primary w-5 h-5" />
                 Visit History
@@ -202,14 +206,14 @@ export default function PatientDashboard() {
                 <div className="overflow-x-auto max-h-80 overflow-y-auto pr-2">
                   <table className="w-full text-left">
                     <thead>
-                      <tr className="border-b border-border text-muted-foreground text-sm">
+                      <tr className="border-b border-slate-200/60 text-muted-foreground text-sm">
                         <th className="pb-3 font-medium">Date</th>
                         <th className="pb-3 font-medium">Doctor</th>
                       </tr>
                     </thead>
                     <tbody>
                       {patient.visits?.map(v => (
-                        <tr key={v.id} className="border-b border-border/50 last:border-0">
+                        <tr key={v.id} className="border-b border-slate-200/60/50 last:border-0">
                           <td className="py-3 text-foreground">{new Date(v.visitDate).toLocaleString()}</td>
                           <td className="py-3 font-medium text-foreground">Dr. {v.doctor?.username}</td>
                         </tr>
@@ -220,7 +224,7 @@ export default function PatientDashboard() {
               )}
             </div>
 
-            <div className="bg-card p-6 rounded-2xl shadow-sm border border-border">
+            <div className="glass-card p-6 rounded-2xl shadow-sm border border-slate-200/60">
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Pill className="text-primary w-5 h-5" />
                 Current Prescriptions
@@ -230,11 +234,11 @@ export default function PatientDashboard() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {patient.prescriptions?.map(p => (
-                    <div key={p.id} className="p-4 border border-border rounded-xl bg-muted/30">
+                    <div key={p.id} className="p-4 border border-slate-200/60 rounded-xl bg-white/50 backdrop-blur-md">
                       <h3 className="font-semibold text-lg">{p.tabletName}</h3>
                       <p className="text-sm text-muted-foreground mt-1">Dosage: {p.dosage}</p>
                       <p className="text-sm text-muted-foreground">Timing: {p.timing}</p>
-                      <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-border">
+                      <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-slate-200/60">
                         Prescribed by Dr. {p.doctor?.username} on {new Date(p.createdAt).toLocaleDateString()}
                       </p>
                     </div>
@@ -244,7 +248,7 @@ export default function PatientDashboard() {
             </div>
 
             {/* Reports & Documents */}
-            <div className="bg-card p-6 rounded-2xl shadow-sm border border-border">
+            <div className="glass-card p-6 rounded-2xl shadow-sm border border-slate-200/60">
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <FileText className="text-primary w-5 h-5" />
                 Reports & Documents
@@ -254,7 +258,7 @@ export default function PatientDashboard() {
               ) : (
                 <div className="space-y-3">
                   {patient.documents.map(doc => (
-                    <div key={doc.id} className="flex items-center justify-between p-4 border border-border rounded-xl bg-muted/30">
+                    <div key={doc.id} className="flex items-center justify-between p-4 border border-slate-200/60 rounded-xl bg-white/50 backdrop-blur-md">
                       <div>
                         <h3 className="font-semibold text-foreground">{doc.title}</h3>
                         <p className="text-sm text-muted-foreground mt-1">{doc.fileName}</p>

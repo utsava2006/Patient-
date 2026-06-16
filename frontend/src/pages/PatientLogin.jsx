@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { User, Phone, ArrowRight } from 'lucide-react';
 
 export default function PatientLogin() {
   const [name, setName] = useState('');
@@ -27,46 +28,70 @@ export default function PatientLogin() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4">
-      <div className="w-full max-w-md p-8 border border-border rounded-2xl bg-card text-card-foreground shadow-lg">
-        <h2 className="text-3xl font-bold text-center mb-6 text-primary">Patient Login</h2>
-        {error && <div className="p-3 mb-4 text-sm text-destructive-foreground bg-destructive/90 rounded-md">{error}</div>}
-        
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Full Name</label>
-            <input 
-              type="text" 
-              required
-              className="w-full p-2.5 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="John Doe"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Phone Number</label>
-            <input 
-              type="tel" 
-              required
-              className="w-full p-2.5 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              placeholder="1234567890"
-            />
-          </div>
-          
-          <button 
-            type="submit" 
-            className="w-full py-2.5 mt-4 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition"
-          >
-            Login
-          </button>
-        </form>
+    <div className="relative min-h-screen overflow-hidden bg-slate-50 flex items-center justify-center p-4">
+      {/* Animated Background */}
+      <div className="absolute top-0 -left-4 w-72 h-72 bg-primary/30 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"></div>
+      <div className="absolute top-0 -right-4 w-72 h-72 bg-secondary/30 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000"></div>
+      <div className="absolute -bottom-8 left-20 w-72 h-72 bg-accent/50 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-4000"></div>
 
-        <p className="mt-6 text-center text-sm text-muted-foreground">
-          New Patient? <Link to="/patient/register" className="text-primary font-medium hover:underline">Register here</Link>
-        </p>
+      <div className="relative z-10 w-full max-w-md animate-in fade-in slide-in-from-bottom-8">
+        <div className="text-center mb-8">
+          <Link to="/" className="text-primary font-bold text-xl tracking-tight hover:opacity-80 transition">HealthTrack</Link>
+          <h2 className="text-4xl font-extrabold mt-6 text-slate-900">Welcome Back</h2>
+          <p className="text-slate-600 mt-2">Login to your patient portal</p>
+        </div>
+
+        <div className="glass-panel p-8 text-card-foreground">
+          {error && <div className="p-4 mb-6 text-sm font-medium text-destructive-foreground bg-destructive/90 rounded-xl animate-in fade-in">{error}</div>}
+          
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5 ml-1">Full Name</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
+                  <User className="w-5 h-5" />
+                </div>
+                <input 
+                  type="text" 
+                  required
+                  className="w-full pl-11 pr-4 py-3 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm text-slate-900"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="John Doe"
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5 ml-1">Phone Number</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
+                  <Phone className="w-5 h-5" />
+                </div>
+                <input 
+                  type="tel" 
+                  required
+                  className="w-full pl-11 pr-4 py-3 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm text-slate-900"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  placeholder="1234567890"
+                />
+              </div>
+            </div>
+            
+            <button 
+              type="submit" 
+              className="w-full group flex items-center justify-center gap-2 py-3.5 mt-2 bg-slate-900 text-white font-semibold rounded-xl hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/20 active:scale-[0.98]"
+            >
+              Sign In
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </form>
+
+          <p className="mt-8 text-center text-sm text-slate-500">
+            Don't have an account? <Link to="/patient/register" className="text-primary font-semibold hover:underline">Register here</Link>
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%; /* Light blue-ish white */
-    --foreground: 222.2 47.4% 11.2%; /* Dark slate */
+    --background: 210 40% 98%; /* Light slate background */
+    --foreground: 222.2 47.4% 11.2%; /* Dark slate text */
     --card: 0 0% 100%; /* Pure white */
     --card-foreground: 222.2 47.4% 11.2%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 47.4% 11.2%;
-    --primary: 238 82% 66%; /* Vibrant Indigo */
+    --primary: 217 91% 60%; /* Beautiful Medical Blue */
     --primary-foreground: 0 0% 100%; /* White text */
-    --secondary: 330 81% 60%; /* Vibrant Pink */
+    --secondary: 160 84% 39%; /* Vibrant Emerald */
     --secondary-foreground: 0 0% 100%; /* White text */
     --muted: 214.3 31.8% 91.4%; /* Light gray */
     --muted-foreground: 215.4 16.3% 46.9%; /* Slate gray text */
-    --accent: 38 92% 50%; /* Vibrant Amber */
-    --accent-foreground: 0 0% 100%; /* White text */
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%; /* Red */
     --destructive-foreground: 0 0% 100%;
-    --border: 214.3 31.8% 85%; /* Soft gray border */
-    --input: 214.3 31.8% 85%; /* Soft gray input */
-    --ring: 238 82% 66%; /* Indigo ring */
+    --border: 214.3 31.8% 91.4%; /* Very soft gray border */
+    --input: 214.3 31.8% 91.4%;
+    --ring: 217 91% 60%; /* Blue ring */
   }
 }
 
@@ -31,8 +31,47 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-slate-50 text-foreground font-sans;
   }
+}
+
+/* Glassmorphism & Animations Utilities */
+@layer utilities {
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-xl shadow-slate-200/50 rounded-3xl;
+  }
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-2xl border border-white/50 shadow-2xl shadow-slate-300/40 rounded-[2rem];
+  }
+  .animate-in {
+    animation-duration: 0.6s;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .fade-in {
+    animation-name: fadeIn;
+  }
+  .slide-in-from-bottom-4 {
+    animation-name: slideInBottom;
+  }
+  .slide-in-from-bottom-8 {
+    animation-name: slideInBottom8;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInBottom {
+  from { transform: translateY(1rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInBottom8 {
+  from { transform: translateY(2rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 /* Hide Google Translate Default UI Elements */
