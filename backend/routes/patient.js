@@ -119,4 +119,34 @@ router.post('/upload', upload.single('file'), async (req, res) => {
   }
 });
 
+// Delete a document
+router.delete('/document/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const document = await req.prisma.document.findUnique({
+      where: { id: parseInt(id) }
+    });
+
+    if (!document) {
+      return res.status(404).json({ error: 'Document not found' });
+    }
+
+    // Attempt to delete file from disk
+    const filePath = path.join(__dirname, '..', document.fileUrl);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    await req.prisma.document.delete({
+      where: { id: parseInt(id) }
+    });
+
+    res.json({ message: 'Document deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Activity, Pill, Calendar, FileText, Upload, Download } from 'lucide-react';
+import { Activity, Pill, Calendar, FileText, Upload, Download, Trash2 } from 'lucide-react';
 
 export default function PatientDashboard() {
   const [patient, setPatient] = useState(null);
@@ -71,6 +71,17 @@ export default function PatientDashboard() {
       alert('Failed to upload document.');
     } finally {
       setIsUploading(false);
+    }
+  };
+
+  const handleDeleteDocument = async (docId) => {
+    if (!window.confirm('Are you sure you want to delete this report?')) return;
+    try {
+      await axios.delete(`https://hospital-backend-8ot5.onrender.com/api/patient/document/${docId}`);
+      fetchPatientData(patient.patientCode);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete document.');
     }
   };
 
@@ -249,15 +260,24 @@ export default function PatientDashboard() {
                         <p className="text-sm text-muted-foreground mt-1">{doc.fileName}</p>
                         <p className="text-xs text-muted-foreground mt-1">Uploaded: {new Date(doc.uploadedAt).toLocaleDateString()}</p>
                       </div>
-                      <a 
-                        href={`https://hospital-backend-8ot5.onrender.com${doc.fileUrl}`} 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="flex items-center gap-2 bg-secondary/10 text-secondary hover:bg-secondary/20 px-3 py-2 rounded-lg transition text-sm font-medium"
-                      >
-                        <Download className="w-4 h-4" />
-                        View
-                      </a>
+                      <div className="flex items-center gap-2">
+                        <a 
+                          href={`https://hospital-backend-8ot5.onrender.com${doc.fileUrl}`} 
+                          target="_blank" 
+                          rel="noreferrer"
+                          className="flex items-center gap-2 bg-secondary/10 text-secondary hover:bg-secondary/20 px-3 py-2 rounded-lg transition text-sm font-medium"
+                        >
+                          <Download className="w-4 h-4" />
+                          View
+                        </a>
+                        <button 
+                          onClick={() => handleDeleteDocument(doc.id)}
+                          className="text-destructive hover:bg-destructive/10 p-2 rounded-lg transition"
+                          title="Delete Report"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
