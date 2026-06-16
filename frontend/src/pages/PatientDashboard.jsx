@@ -24,7 +24,7 @@ export default function PatientDashboard() {
 
   const fetchPatientData = async (code) => {
     try {
-      const res = await axios.get(`https://hospital-backend-8ot5.onrender.com/api/patient/${code}`);
+      const res = await axios.get(`http://localhost:5000/api/patient/${code}`);
       setPatient(res.data);
     } catch (err) {
       console.error(err);
@@ -34,7 +34,7 @@ export default function PatientDashboard() {
   const handleAddVitals = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://hospital-backend-8ot5.onrender.com/api/patient/vitals', {
+      await axios.post('http://localhost:5000/api/patient/vitals', {
         patientId: patient.id,
         systolicBP,
         diastolicBP,
@@ -60,7 +60,7 @@ export default function PatientDashboard() {
     formData.append('file', docFile);
 
     try {
-      await axios.post('https://hospital-backend-8ot5.onrender.com/api/patient/upload', formData, {
+      await axios.post('http://localhost:5000/api/patient/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setDocTitle('');
@@ -77,7 +77,7 @@ export default function PatientDashboard() {
   const handleDeleteDocument = async (docId) => {
     if (!window.confirm('Are you sure you want to delete this report?')) return;
     try {
-      await axios.delete(`https://hospital-backend-8ot5.onrender.com/api/patient/document/${docId}`);
+      await axios.delete(`http://localhost:5000/api/patient/document/${docId}`);
       fetchPatientData(patient.patientCode);
     } catch (err) {
       console.error(err);
@@ -266,7 +266,7 @@ export default function PatientDashboard() {
                       </div>
                       <div className="flex items-center gap-2">
                         <a 
-                          href={`https://hospital-backend-8ot5.onrender.com${doc.fileUrl}`} 
+                          href={`http://localhost:5000${doc.fileUrl}`} 
                           target="_blank" 
                           rel="noreferrer"
                           className="flex items-center gap-2 bg-secondary/10 text-secondary hover:bg-secondary/20 px-3 py-2 rounded-lg transition text-sm font-medium"

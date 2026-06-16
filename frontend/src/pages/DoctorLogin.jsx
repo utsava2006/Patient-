@@ -14,7 +14,7 @@ export default function DoctorLogin() {
     setError('');
     
     try {
-      const res = await axios.post('https://hospital-backend-8ot5.onrender.com/api/auth/doctor/login', {
+      const res = await axios.post('http://localhost:5000/api/auth/doctor/login', {
         username,
         password
       });

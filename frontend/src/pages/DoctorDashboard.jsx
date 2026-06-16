@@ -50,7 +50,7 @@ export default function DoctorDashboard() {
       return;
     }
     try {
-      const res = await axios.put(`https://hospital-backend-8ot5.onrender.com/api/doctor/${doctor.id}/credentials`, {
+      const res = await axios.put(`http://localhost:5000/api/doctor/${doctor.id}/credentials`, {
         currentPassword: settingsCurrentPassword,
         newUsername: settingsNewUsername,
         newPassword: settingsNewPassword
@@ -80,9 +80,9 @@ export default function DoctorDashboard() {
 
     const fetchStatsAndPatients = async () => {
       try {
-        const statsRes = await axios.get('https://hospital-backend-8ot5.onrender.com/api/doctor/stats');
+        const statsRes = await axios.get('http://localhost:5000/api/doctor/stats');
         setStats(statsRes.data);
-        const patientsRes = await axios.get('https://hospital-backend-8ot5.onrender.com/api/doctor/patients');
+        const patientsRes = await axios.get('http://localhost:5000/api/doctor/patients');
         setAllPatients(patientsRes.data);
       } catch (err) {
         console.error('Failed to fetch data:', err);
@@ -97,7 +97,7 @@ export default function DoctorDashboard() {
     setSearchError('');
     setPatient(null);
     try {
-      const res = await axios.get(`https://hospital-backend-8ot5.onrender.com/api/patient/${codeToSearch}`);
+      const res = await axios.get(`http://localhost:5000/api/patient/${codeToSearch}`);
       setPatient(res.data);
       setSearchCode(res.data.patientCode);
       if (res.data.nextVisitDate) {
@@ -113,7 +113,7 @@ export default function DoctorDashboard() {
   const handlePrescribe = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://hospital-backend-8ot5.onrender.com/api/doctor/prescribe', {
+      await axios.post('http://localhost:5000/api/doctor/prescribe', {
         patientId: patient.id,
         doctorId: doctor.id,
         tabletName,
@@ -133,7 +133,7 @@ export default function DoctorDashboard() {
   const handleScheduleVisit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://hospital-backend-8ot5.onrender.com/api/doctor/patient/${patient.patientCode}/visit`, {
+      await axios.put(`http://localhost:5000/api/doctor/patient/${patient.patientCode}/visit`, {
         nextVisitDate
       });
       alert('Visit scheduled successfully!');
@@ -146,7 +146,7 @@ export default function DoctorDashboard() {
   const handleAddVitals = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://hospital-backend-8ot5.onrender.com/api/patient/vitals', {
+      await axios.post('http://localhost:5000/api/patient/vitals', {
         patientId: patient.id,
         systolicBP,
         diastolicBP,
@@ -164,7 +164,7 @@ export default function DoctorDashboard() {
   const handleDeleteVisit = async (visitId) => {
     if (!window.confirm('Are you sure you want to delete this visit record?')) return;
     try {
-      await axios.delete(`https://hospital-backend-8ot5.onrender.com/api/doctor/visit/${visitId}`);
+      await axios.delete(`http://localhost:5000/api/doctor/visit/${visitId}`);
       handleSearch({ preventDefault: () => {} });
     } catch (err) {
       console.error(err);
@@ -175,7 +175,7 @@ export default function DoctorDashboard() {
   const handleDeletePrescription = async (prescriptionId) => {
     if (!window.confirm('Are you sure you want to delete this prescription?')) return;
     try {
-      await axios.delete(`https://hospital-backend-8ot5.onrender.com/api/doctor/prescription/${prescriptionId}`);
+      await axios.delete(`http://localhost:5000/api/doctor/prescription/${prescriptionId}`);
       handleSearch({ preventDefault: () => {} });
     } catch (err) {
       console.error(err);
@@ -185,7 +185,7 @@ export default function DoctorDashboard() {
 
   const handleLogVisit = async () => {
     try {
-      await axios.post('https://hospital-backend-8ot5.onrender.com/api/doctor/log-visit', {
+      await axios.post('http://localhost:5000/api/doctor/log-visit', {
         patientId: patient.id,
         doctorId: doctor.id
       });
@@ -201,11 +201,11 @@ export default function DoctorDashboard() {
     e.stopPropagation();
     if (!window.confirm(`Are you sure you want to permanently delete patient ${patientName} and all their records?`)) return;
     try {
-      await axios.delete(`https://hospital-backend-8ot5.onrender.com/api/doctor/patient/${patientId}`);
+      await axios.delete(`http://localhost:5000/api/doctor/patient/${patientId}`);
       
-      const patientsRes = await axios.get('https://hospital-backend-8ot5.onrender.com/api/doctor/patients');
+      const patientsRes = await axios.get('http://localhost:5000/api/doctor/patients');
       setAllPatients(patientsRes.data);
-      const statsRes = await axios.get('https://hospital-backend-8ot5.onrender.com/api/doctor/stats');
+      const statsRes = await axios.get('http://localhost:5000/api/doctor/stats');
       setStats(statsRes.data);
       
       if (patient?.id === patientId) {
@@ -453,7 +453,7 @@ export default function DoctorDashboard() {
                           <p className="text-xs text-muted-foreground mt-1">Uploaded: {new Date(doc.uploadedAt).toLocaleDateString()}</p>
                         </div>
                         <a 
-                          href={`https://hospital-backend-8ot5.onrender.com${doc.fileUrl}`} 
+                          href={`http://localhost:5000${doc.fileUrl}`} 
                           target="_blank" 
                           rel="noreferrer"
                           className="flex items-center gap-2 bg-secondary/10 text-secondary hover:bg-secondary/20 px-3 py-2 rounded-lg transition text-sm font-medium"

@@ -16,7 +16,7 @@ export default function PatientRegister() {
     setSuccess('');
     
     try {
-      const res = await axios.post('https://hospital-backend-8ot5.onrender.com/api/auth/patient/register', {
+      const res = await axios.post('http://localhost:5000/api/auth/patient/register', {
         name,
         phoneNumber
       });
