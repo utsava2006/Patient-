@@ -18,6 +18,7 @@ model Patient {
   vitals        Vitals[]
   prescriptions Prescription[]
   visits        Visit[]
+  documents     Document[]
 }
 
 model Doctor {
@@ -58,4 +59,14 @@ model Visit {
   doctorId  Int
   doctor    Doctor   @relation(fields: [doctorId], references: [id])
   visitDate DateTime @default(now())
+}
+
+model Document {
+  id          Int      @id @default(autoincrement())
+  patientId   Int
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  title       String
+  fileName    String
+  fileUrl     String
+  uploadedAt  DateTime @default(now())
 }

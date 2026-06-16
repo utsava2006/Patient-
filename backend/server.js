@@ -8,6 +8,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Serve static files for uploads
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Attach prisma to req for easy access in routes
 app.use((req, res, next) => {
   req.prisma = prisma;

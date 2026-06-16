@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Search, Activity, Pill, Calendar, Trash2, Users, Settings, X } from 'lucide-react';
+import { Search, Activity, Pill, Calendar, Trash2, Users, Settings, X, FileText, Download } from 'lucide-react';
 
 export default function DoctorDashboard() {
   const [searchCode, setSearchCode] = useState('');
@@ -430,6 +430,37 @@ export default function DoctorDashboard() {
                         <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-border">
                           Prescribed by Dr. {p.doctor?.username} on {new Date(p.createdAt).toLocaleDateString()}
                         </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Reports & Documents */}
+              <div className="bg-card p-6 rounded-2xl shadow-sm border border-border mt-8">
+                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                  <FileText className="text-secondary w-5 h-5" /> Patient Reports & Documents
+                </h3>
+                {(!patient.documents || patient.documents.length === 0) ? (
+                  <p className="text-muted-foreground">No documents uploaded by this patient.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {patient.documents.map(doc => (
+                      <div key={doc.id} className="flex items-center justify-between p-4 border border-border rounded-xl bg-muted/30">
+                        <div>
+                          <h3 className="font-semibold text-foreground">{doc.title}</h3>
+                          <p className="text-sm text-muted-foreground mt-1">{doc.fileName}</p>
+                          <p className="text-xs text-muted-foreground mt-1">Uploaded: {new Date(doc.uploadedAt).toLocaleDateString()}</p>
+                        </div>
+                        <a 
+                          href={`https://hospital-backend-8ot5.onrender.com${doc.fileUrl}`} 
+                          target="_blank" 
+                          rel="noreferrer"
+                          className="flex items-center gap-2 bg-secondary/10 text-secondary hover:bg-secondary/20 px-3 py-2 rounded-lg transition text-sm font-medium"
+                        >
+                          <Download className="w-4 h-4" />
+                          View
+                        </a>
                       </div>
                     ))}
                   </div>

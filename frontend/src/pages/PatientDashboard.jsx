@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Activity, Pill, Calendar } from 'lucide-react';
+import { Activity, Pill, Calendar, FileText, Upload, Download } from 'lucide-react';
 
 export default function PatientDashboard() {
   const [patient, setPatient] = useState(null);
   const [systolicBP, setSystolicBP] = useState('');
   const [diastolicBP, setDiastolicBP] = useState('');
   const [bloodSugar, setBloodSugar] = useState('');
+  const [docTitle, setDocTitle] = useState('');
+  const [docFile, setDocFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,6 +46,31 @@ export default function PatientDashboard() {
       fetchPatientData(patient.patientCode);
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleUploadDocument = async (e) => {
+    e.preventDefault();
+    if (!docFile || !docTitle) return;
+    
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('patientId', patient.id);
+    formData.append('title', docTitle);
+    formData.append('file', docFile);
+
+    try {
+      await axios.post('https://hospital-backend-8ot5.onrender.com/api/patient/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      setDocTitle('');
+      setDocFile(null);
+      fetchPatientData(patient.patientCode);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to upload document.');
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -92,6 +120,27 @@ export default function PatientDashboard() {
                 </div>
                 <button type="submit" className="w-full py-2 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition">
                   Save Vitals
+                </button>
+              </form>
+            </div>
+
+            {/* Upload Document */}
+            <div className="bg-card p-6 rounded-2xl shadow-sm border border-border mt-8">
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Upload className="text-primary w-5 h-5" />
+                Upload Report
+              </h2>
+              <form onSubmit={handleUploadDocument} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Report Title</label>
+                  <input type="text" required value={docTitle} onChange={e => setDocTitle(e.target.value)} className="w-full p-2 bg-input border border-border rounded-lg" placeholder="e.g., Blood Test Results" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">File</label>
+                  <input type="file" required onChange={e => setDocFile(e.target.files[0])} className="w-full p-2 bg-input border border-border rounded-lg" />
+                </div>
+                <button type="submit" disabled={isUploading} className="w-full flex items-center justify-center gap-2 py-2 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition disabled:opacity-50">
+                  {isUploading ? 'Uploading...' : 'Upload Report'}
                 </button>
               </form>
             </div>
@@ -177,6 +226,38 @@ export default function PatientDashboard() {
                       <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-border">
                         Prescribed by Dr. {p.doctor?.username} on {new Date(p.createdAt).toLocaleDateString()}
                       </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Reports & Documents */}
+            <div className="bg-card p-6 rounded-2xl shadow-sm border border-border">
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <FileText className="text-primary w-5 h-5" />
+                Reports & Documents
+              </h2>
+              {(!patient.documents || patient.documents.length === 0) ? (
+                <p className="text-muted-foreground">No documents uploaded yet.</p>
+              ) : (
+                <div className="space-y-3">
+                  {patient.documents.map(doc => (
+                    <div key={doc.id} className="flex items-center justify-between p-4 border border-border rounded-xl bg-muted/30">
+                      <div>
+                        <h3 className="font-semibold text-foreground">{doc.title}</h3>
+                        <p className="text-sm text-muted-foreground mt-1">{doc.fileName}</p>
+                        <p className="text-xs text-muted-foreground mt-1">Uploaded: {new Date(doc.uploadedAt).toLocaleDateString()}</p>
+                      </div>
+                      <a 
+                        href={`https://hospital-backend-8ot5.onrender.com${doc.fileUrl}`} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="flex items-center gap-2 bg-secondary/10 text-secondary hover:bg-secondary/20 px-3 py-2 rounded-lg transition text-sm font-medium"
+                      >
+                        <Download className="w-4 h-4" />
+                        View
+                      </a>
                     </div>
                   ))}
                 </div>
