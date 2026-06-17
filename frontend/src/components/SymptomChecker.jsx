@@ -87,16 +87,17 @@ export default function SymptomChecker({ patient }) {
 
   const generatePillAnalysis = async (ocrText, isImageMode = true) => {
     const lowerText = ocrText.toLowerCase();
+    const disclaimer = "\n\n⚠️ *This information is for educational purposes only and does not replace medical advice. Consult a qualified healthcare professional before using any medication.*";
     
     // 1. Instant fallback for common drugs
     if (lowerText.includes('paracetamol') || lowerText.includes('paracitamol') || lowerText.includes('parasitamol') || lowerText.includes('dolo')) {
-      return `🔍 **Analysis Complete:** This is **Paracetamol**. It is an analgesic used to treat mild-to-moderate pain and reduce fever. Please do not exceed 4000mg in 24 hours.`;
+      return `🔍 **Analysis Complete:** This is **Paracetamol**. It is an analgesic used to treat mild-to-moderate pain and reduce fever. Please do not exceed 4000mg in 24 hours.` + disclaimer;
     }
     if (lowerText.includes('ibuprofen') || lowerText.includes('ibuprofin') || lowerText.includes('advil')) {
-      return `🔍 **Analysis Complete:** This is **Ibuprofen**, a nonsteroidal anti-inflammatory drug (NSAID) used to reduce inflammation and relieve pain.`;
+      return `🔍 **Analysis Complete:** This is **Ibuprofen**, a nonsteroidal anti-inflammatory drug (NSAID) used to reduce inflammation and relieve pain.` + disclaimer;
     }
     if (lowerText.includes('amoxicillin') || lowerText.includes('amoxisilin')) {
-      return `🔍 **Analysis Complete:** This is **Amoxicillin**, an antibiotic. It is crucial to complete the entire course, even if you feel better.`;
+      return `🔍 **Analysis Complete:** This is **Amoxicillin**, an antibiotic. It is crucial to complete the entire course, even if you feel better.` + disclaimer;
     }
 
     // 2. Dynamic Universal Wikipedia Search
@@ -118,7 +119,7 @@ export default function SymptomChecker({ patient }) {
           // Verify the summary is actually about a drug or medical concept
           const summary = data.extract.toLowerCase();
           if (summary.includes('medication') || summary.includes('drug') || summary.includes('treatment') || summary.includes('used to') || summary.includes('medical') || summary.includes('vitamin') || summary.includes('supplement') || summary.includes('acid')) {
-            return `🔍 **Information Found:** I looked up **"${word}"**.\n\n**Medical Uses:** ${data.extract}\n\n*Source: Wikipedia Medical Database. Please consult your doctor for exact dosage.*`;
+            return `🔍 **Information Found:** I looked up **"${word}"**.\n\n**Medical Uses:** ${data.extract}\n\n*Source: Wikipedia Medical Database.*` + disclaimer;
           }
         }
       } catch (err) {
