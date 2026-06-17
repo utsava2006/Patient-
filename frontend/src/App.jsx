@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Smartphone } from 'lucide-react';
 import Landing from './pages/Landing';
 import PatientLogin from './pages/PatientLogin';
 import PatientRegister from './pages/PatientRegister';
@@ -32,17 +33,34 @@ function App() {
     }
   };
 
+  const openMobileView = () => {
+    const width = 390; // Typical modern smartphone width
+    const height = 844;
+    const left = (window.screen.width / 2) - (width / 2);
+    const top = (window.screen.height / 2) - (height / 2);
+    window.open(window.location.href, '_blank', `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`);
+  };
+
   return (
     <Router>
       <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/30">
-        <div className="fixed top-4 right-4 z-[9999] flex items-center gap-2">
+        <div className="fixed top-4 right-4 z-[9999] flex items-center gap-3">
           {/* Hide the default Google widget */}
           <div id="google_translate_element" className="hidden"></div>
           
-          {/* Custom sleek toggle */}
+          {/* Mobile View Toggle */}
+          <button 
+            onClick={openMobileView}
+            title="Simulate Mobile View"
+            className="flex items-center justify-center bg-card border border-border text-foreground w-10 h-10 rounded-full shadow-lg hover:bg-secondary/20 transition cursor-pointer hover:scale-105 active:scale-95"
+          >
+            <Smartphone className="w-5 h-5 text-primary" />
+          </button>
+
+          {/* Custom sleek language toggle */}
           <button 
             onClick={toggleLanguage}
-            className="flex items-center gap-2 bg-card border border-border text-foreground px-4 py-2 rounded-full shadow-lg hover:bg-secondary/20 transition font-medium text-sm cursor-pointer"
+            className="flex items-center gap-2 bg-card border border-border text-foreground px-4 py-2 rounded-full shadow-lg hover:bg-secondary/20 transition font-medium text-sm cursor-pointer hover:scale-105 active:scale-95"
           >
             <span className={!isKannada ? 'font-bold text-primary' : 'text-muted-foreground'}>EN</span>
             <div className={`w-10 h-5 rounded-full relative shadow-inner flex items-center transition-colors ${isKannada ? 'bg-primary' : 'bg-muted'}`}>
