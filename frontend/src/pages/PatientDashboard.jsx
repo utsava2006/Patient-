@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Activity, Pill, Calendar, FileText, Upload, Download, Trash2 } from 'lucide-react';
+import SymptomChecker from '../components/SymptomChecker';
 
 export default function PatientDashboard() {
   const [patient, setPatient] = useState(null);
@@ -290,6 +291,7 @@ export default function PatientDashboard() {
           </div>
         </div>
       </div>
+      <SymptomChecker patient={patient} />
     </div>
   );
 }

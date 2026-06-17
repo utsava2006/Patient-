@@ -3,6 +3,10 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+// Initialize Gemini API
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Ensure uploads directory exists
 const uploadDir = path.join(__dirname, '..', 'uploads');
@@ -146,6 +150,47 @@ router.delete('/document/:id', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Identify pill using Gemini AI
+router.post('/identify-pill', upload.single('image'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'Image file is required' });
+  }
+
+  try {
+    const filePath = req.file.path;
+    const mimeType = req.file.mimetype;
+
+    // The Gemini API requires base64 encoded data
+    const imagePart = {
+      inlineData: {
+        data: Buffer.from(fs.readFileSync(filePath)).toString("base64"),
+        mimeType
+      },
+    };
+
+    // Use Gemini 1.5 Flash for vision tasks
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const prompt = "Identify the medication, pill, or tablet in this image. Explain its typical purpose, common dosage, and provide general medical advice. Format the response nicely using markdown and keep it professional and easy to understand for a patient.";
+    
+    const result = await model.generateContent([prompt, imagePart]);
+    const responseText = result.response.text();
+
+    // Clean up the temporary uploaded file to save disk space
+    fs.unlinkSync(filePath);
+
+    res.json({ analysis: responseText });
+  } catch (error) {
+    console.error("Gemini AI Error:", error);
+    
+    // Clean up file in case of error too
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+    
+    res.status(500).json({ error: 'Failed to analyze image using AI' });
   }
 });
 
