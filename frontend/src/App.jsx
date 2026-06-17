@@ -11,19 +11,23 @@ function App() {
   const [isKannada, setIsKannada] = useState(false);
 
   useEffect(() => {
-    if (document.cookie.includes('googtrans=/en/kn')) {
+    const cookies = document.cookie;
+    if (cookies.includes('googtrans=/en/kn') || cookies.includes('googtrans=%2Fen%2Fkn')) {
       setIsKannada(true);
     }
   }, []);
 
   const toggleLanguage = () => {
     if (isKannada) {
-      document.cookie = `googtrans=/en/en; path=/; domain=${window.location.hostname}`;
-      document.cookie = `googtrans=/en/en; path=/;`;
+      // Clear all possible variations of the googtrans cookie to revert to English
+      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
+      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.localhost;';
       window.location.reload();
     } else {
-      document.cookie = `googtrans=/en/kn; path=/; domain=${window.location.hostname}`;
-      document.cookie = `googtrans=/en/kn; path=/;`;
+      // Set to Kannada
+      document.cookie = 'googtrans=/en/kn; path=/;';
+      document.cookie = `googtrans=/en/kn; path=/; domain=${window.location.hostname};`;
       window.location.reload();
     }
   };
